@@ -1,38 +1,105 @@
 .App {
-  text-align: center;
+	text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.logo {
+	height: 10vmin;
+	pointer-events: none;
+	margin-right: 0.5em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+	.logo {
+		animation: logo-spin infinite 20s linear;
+	}
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.header {
+	background-color: #282c34;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: left;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
-.App-link {
-  color: #61dafb;
+@keyframes logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#container {
+	display:flex;
+}
+
+.board {
+	display: grid;
+	grid-template-columns: repeat(8, auto);
+	grid-template-rows: repeat(8, auto);
+	margin: 0.5em;
+	border: 2px solid #808080;
+}
+
+.board .field {
+	position: relative; /* because .borderField lettering needs to have absolute */
+	float: left;
+	background-color: #F0D9B5;
+	line-height: 10vmin;
+	font-size: 6vmin;
+	width: 10vmin;
+	height: 10vmin;
+}
+.field.highlighted {
+	background-color: #CED26B;
+}
+
+.board div:nth-child(-2n+8), 
+.board div:nth-child(8) ~ div:nth-child(-2n+15), 
+.board div:nth-child(16) ~ div:nth-child(-2n+24), 
+.board div:nth-child(24) ~ div:nth-child(-2n+31), 
+.board div:nth-child(32) ~ div:nth-child(-2n+40), 
+.board div:nth-child(40) ~ div:nth-child(-2n+47), 
+.board div:nth-child(48) ~ div:nth-child(-2n+56), 
+.board div:nth-child(56) ~ div:nth-child(-2n+63) {
+	background-color: #B58863;
+}
+
+.figure.black {
+	color: black;
+	text-shadow:
+		1px 1px white,
+		-1px -1px white,
+		1px -1px white,
+		-1px 1px white;
+		/*1px 0 white,
+		0 1px white,
+		-1px 0 white,
+		0 -1px white;*/
+}
+.figure.white {
+	color: white;
+	text-shadow:
+		1px 1px black,
+		-1px -1px black,
+		1px -1px black,
+		-1px 1px black;
+}
+
+.borderField {
+	position: absolute;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+.borderField.bottom {
+	top: calc(50% - 10px);
+	right: 5px;
+}
+.borderField.left {
+	left: 5px;
+	bottom: calc(50% - 10px); /* 10px is fontsize */
 }
