@@ -1,6 +1,6 @@
 # Chessurprise
 
-Let's hope my wife names the child.  
+<sup>Let's hope my wife names the child.</sup>
 
 This is chess, but both players simultaneously make a move. After they're both decided, the moves are shown to the other player.
 

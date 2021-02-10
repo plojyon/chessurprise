@@ -34,7 +34,11 @@
 }
 
 #container {
-	display:flex;
+	display: flex;
+}
+
+#container div {
+	font-family: 'Noto Sans', Sans-Serif !important; /* letters on board border */
 }
 
 .board {
@@ -50,7 +54,7 @@
 	float: left;
 	background-color: #F0D9B5;
 	line-height: 10vmin;
-	font-size: 6vmin;
+	font-size: 7vmin;
 	width: 10vmin;
 	height: 10vmin;
 }

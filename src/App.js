@@ -1,6 +1,7 @@
+import Chessboard from 'chessboardjsx';
 import './App.css';
-import Board from "./components/Board";
-import HistoryPanel from "./components/HistoryPanel";
+import Game from "./components/Game";
+import { Chess } from "chess.js"; // import Chess from  "chess.js"(default) if recieving an error about new Chess() not being a constructor
 
 function App() {
 	return (
@@ -10,8 +11,10 @@ function App() {
 				<p>Chessurprise</p>
 			</header>
 			<div id="container">
-				<Board/>
-				<HistoryPanel/>
+				{/*<Board/>*/}
+				{/*<Chessboard position="start" />*/}
+				{/*<HistoryPanel />*/}
+				<Game/>
 			</div>
 		</div>
 	);
