@@ -17,7 +17,14 @@ class Game extends Component {
 			game: new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"),
 			socket: null,
 			message: "Connecting ...",
+			isMyTurn: false
 		};
+	}
+
+	setTurn(fen, colour) {
+		let fens = fen.split(" ");
+		fens[1] = colour.charAt(0); // change turn to match my colour
+		return fens.join(" ");
 	}
 
 	// connect to the server (create this.state.socket)
@@ -27,7 +34,7 @@ class Game extends Component {
 
 		socket.on("board", board => {
 			console.log("setting board to: " + board);
-			this.setState({ game: new Chess(board) });
+			this.setState({ game: new Chess(this.setTurn(board, this.state.colour)) });
 		});
 
 		socket.on("colour", colour => {
@@ -35,14 +42,19 @@ class Game extends Component {
 		});
 
 		socket.on("turn", player => {
-			if (player === this.state.colour) {
-				this.setState({ message: "You're tarded" });
-			} else {
-				this.setState({ message: player + " power" });
-			}
+			//if (player === this.state.colour) {
+			//	this.setState({ message: "You're tarded" });
+			//} else {
+			//	this.setState({ message: player + " power" });
+			//}
+			if (["white", "black"].includes(this.state.colour))
+				this.setState({ isMyTurn: true });
+			else
+				alert("turn, but im spectator");
 		});
 
 		socket.on("victory", player => {
+			alert("game is end");
 			let message;
 			if (player === this.state.colour) {
 				message = "You win!";
@@ -56,9 +68,10 @@ class Game extends Component {
 	}
 
 	isMyTurn() {
-		if (this.state.game.turn() == 'w' && this.state.colour == "white") return true;
-		if (this.state.game.turn() == 'b' && this.state.colour == "black") return true;
-		return false;
+		return this.state.isMyTurn;
+		//if (this.state.game.turn() == 'w' && this.state.colour == "white") return true;
+		//if (this.state.game.turn() == 'b' && this.state.colour == "black") return true;
+		//return false;
 	}
 
 	onDrop = ({ sourceSquare, targetSquare }) => {
@@ -85,6 +98,7 @@ class Game extends Component {
 			squareStyles: squareStyling({ pieceSquare, history })
 		}));*/
 		this.state.onMove(move);
+		this.setState({ isMyTurn: false });
 		this.removeSelection();
 	};
 
@@ -159,18 +173,12 @@ class Game extends Component {
 			this.removeHighlightSquare(square);
 	}
 
-	// get square name (a4) and return whether it is white
-	isWhite = square => {
-		let x = parseInt(square[0].charCodeAt(0) - 'a'.charCodeAt(0));
-		let y = parseInt(square[1]);
-		return (x + y) % 2 == 0;
-	}
-
 	// central squares get diff dropSquareStyles
 	onDragOverSquare = square => {
 		this.setState({
 			dropSquareStyle: {
-				backgroundColour: this.isWhite(square) ? "#AEB188" : "#85784E"
+				backgroundColour: (this.state.game.square_color(square) == 'light') ?
+					"#AEB188" : "#85784E"
 			}
 		});
 	};
@@ -231,6 +239,7 @@ class Game extends Component {
 	}
 
 	render() {
+		//let rotation = (this.state.colour == "white") ? "180deg" : "0";
 		return (
 			<div className="App">
 				<div>
@@ -259,6 +268,8 @@ class Game extends Component {
 					turn: {this.state.game.turn()}
 					<br/>
 					you: {this.state.colour}
+					<br/>
+					isMyTurn: {this.isMyTurn() ? "yes": "no"}
 				</span>
 			</div>
 		);
